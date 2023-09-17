@@ -19,7 +19,7 @@ int (*format_handler(const char *format, int *int_ptr))(va_list)
 	int i = 0;
 	fmt fmt_type[] = {
 		{'c', print_char}, {'s', print_string}, {'%', print_percent},
-		 {'d', print_int}, {'i', print_int}, {'o', print_octal},
+		 {'d', print_int}, {'i', print_int},
 		 {'\0', NULL}
 	};
 
