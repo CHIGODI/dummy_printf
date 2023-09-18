@@ -1,11 +1,4 @@
 #include "main.h"
-struct case_fmt
-{
-	char ch;
-	int (*func)(va_list);
-};
-
-typedef struct case_fmt fmt;
 
 /**
  * format_handler - handling any format to call the appropriate func
@@ -19,7 +12,7 @@ int (*format_handler(const char *format, int *int_ptr))(va_list)
 	int i = 0;
 	fmt fmt_type[] = {
 		{'c', print_char}, {'s', print_string}, {'%', print_percent},
-		 {'d', print_int}, {'i', print_int},
+		 {'d', print_int}, {'i', print_int}, {'b', print_binary},
 		 {'\0', NULL}
 	};
 
@@ -27,10 +20,10 @@ int (*format_handler(const char *format, int *int_ptr))(va_list)
 	{
 		if (fmt_type[i].ch == format[*int_ptr])
 		{
-			return fmt_type[i].func;
+			return (fmt_type[i].func);
 		}
 		i++;
 	}
 
-	return NULL;
+	return (NULL);
 }
