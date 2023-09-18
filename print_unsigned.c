@@ -1,26 +1,5 @@
 #include "main.h"
-/**
- * reverse - Reverses a string
- * @str: The string to be reversed
- * @length: The length of the string
- *
- * Description: This function reverses the characters in the given string.
- */
-static void reverse(char *str, int length)
-{
-	int start = 0;
-	int end = length - 1;
 
-	while (start < end)
-	{
-		char temp = str[start];
-
-		str[start] = str[end];
-		str[end] = temp;
-		start++;
-		end--;
-	}
-}
 /**
  * itoa_unsigned - Converts an unsigned integer to a
  * string representation with the specified base
@@ -49,7 +28,7 @@ void itoa_unsigned(unsigned int num, char *str, int base)
 		num /= base;
 	}
 	str[i] = '\0';
-	reverse(str, i);
+	reverse(str);
 }
 
 /**
