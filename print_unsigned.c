@@ -1,28 +1,7 @@
 #include "main.h"
-/**
- * reverse - Reverses a string
- * @str: The string to be reversed
- * @length: The length of the string
- *
- * Description: This function reverses the characters in the given string.
- */
-static void reverse(char *str, int length)
-{
-	int start = 0;
-	int end = length - 1;
 
-	while (start < end)
-	{
-		char temp = str[start];
-
-		str[start] = str[end];
-		str[end] = temp;
-		start++;
-		end--;
-	}
-}
 /**
- * itoa_unsigned - Converts an unsigned integer to a
+ * itoa_unsign - Converts an unsigned integer to a
  * string representation with the specified base
  * @num: The unsigned integer to be converted.
  * @str: A buffer to store the resulting string.
@@ -30,9 +9,10 @@ static void reverse(char *str, int length)
  *
  * Return: Void
  */
-void itoa_unsigned(unsigned int num, char *str, int base)
+void itoa_unsign(unsigned int num, char *str, int base)
 {
 	int i = 0;
+	unsigned int rem;
 
 	if (num == 0)
 	{
@@ -43,13 +23,13 @@ void itoa_unsigned(unsigned int num, char *str, int base)
 
 	while (num != 0)
 	{
-		int rem = num % base;
+		rem = num % base;
 
 		str[i++] = rem + '0';
 		num /= base;
 	}
 	str[i] = '\0';
-	reverse(str, i);
+	reverse(str);
 }
 
 /**
@@ -61,38 +41,33 @@ void itoa_unsigned(unsigned int num, char *str, int base)
 int print_unsigned(va_list args)
 {
 	unsigned int num = va_arg(args, unsigned int);
-	int char_count = 0;
+	int char_count = 0, digit_count;
+	unsigned int temp;
+	char *str;
 
 	if (num == 0)
 	{
 		char_count += write(1, "0", 1);
 	}
-	else
+
+	digit_count = 0;
+	temp = num;
+
+	while (temp != 0)
 	{
-		int digit_count = 0;
-		unsigned int temp = num;
-
-		while (temp != 0)
-		{
-			temp /= 10;
-			digit_count++;
-		}
-		while (digit_count > 0)
-		{
-			unsigned int divisor = 1;
-			int i;
-
-			for (i = 1; i < digit_count; i++)
-			{
-				divisor *= 10;
-			}
-
-			char digit = '0' + (num / divisor);
-
-			char_count += write(1, &digit, 1);
-			num %= divisor;
-			digit_count--;
-		}
+		temp /= 10;
+		digit_count++;
 	}
+	str = malloc((sizeof(char) * digit_count) + 1);
+
+	if (str == NULL)
+	{
+		return (-1);
+	}
+
+	itoa_unsign(num, str, 10);
+	char_count = strlen(str);
+	write(1, str, char_count);
+	free(str);
 	return (char_count);
 }

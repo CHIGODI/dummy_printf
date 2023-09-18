@@ -1,0 +1,14 @@
+#include "main.h"
+/**
+ *
+ */
+int print_string(va_list args, char buffer[], int width, int precision,
+		 int width, int size, int flag);)
+{
+	int len;
+	char *str;
+
+	str = va_arg(args, char *);
+	len =strlen(str);
+	return (write(1, str, len));
+}

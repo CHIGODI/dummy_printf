@@ -13,6 +13,8 @@ int (*format_handler(const char *format, int *int_ptr))(va_list)
 	fmt fmt_type[] = {
 		{'c', print_char}, {'s', print_string}, {'%', print_percent},
 		 {'d', print_int}, {'i', print_int}, {'b', print_binary},
+		 {'u', print_unsigned}, {'o', print_octal}, {'x', print_hexadecimal},
+		 {'X', print_hexa_upper},
 		 {'\0', NULL}
 	};
 
