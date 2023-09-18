@@ -1,20 +1,7 @@
 #include "main.h"
-static void reverse(char *str, int length)
-{
-	int start = 0;
-	int end = length - 1;
-	while (start < end)
-	{
-	    char temp = str[start];
-	    str[start] = str[end];
-	    str[end] = temp;
-	    start++;
-	    end--;
-	}
-}
-
 /**
- * itoa - Converts an integer to a string representation with the specified base.
+ * itoa - Converts an integer to a string representation with the
+ *        specified base.
  * @num: The integer to be converted.
  * @str: A buffer to store the resulting string.
  * @base: The numeric base for the conversion
@@ -26,7 +13,7 @@ void itoa(int num, char *str, int base)
 	int i = 0, rem;
 	bool isNegative = false;
 
-        if (num == 0)
+	if (num == 0)
 	{
 		str[i++] = '0';
 		str[i] = '\0';
@@ -39,7 +26,7 @@ void itoa(int num, char *str, int base)
 		num = -num;
 	}
 
-        while (num != 0)
+	while (num != 0)
 	{
 		rem = num % base;
 		str[i++] = (rem > 9) ? (rem - 10) + 'a' : rem + '0';
@@ -52,7 +39,7 @@ void itoa(int num, char *str, int base)
 	}
 	str[i] = '\0';
 
-	reverse(str, i);
+	reverse(str);
 }
 
 
@@ -67,7 +54,7 @@ int print_int(va_list args)
 {
 	int num = va_arg(args, int);
 	int count = 0;
-	int temp = num;
+	int temp = num, chars_written;
 	char *str;
 
 	while (temp != 0)
@@ -85,7 +72,7 @@ int print_int(va_list args)
 		itoa(num, str, 10);
 
 		/* Write the string to the standard output*/
-		int chars_written = write(1, str, strlen(str));
+		chars_written = write(1, str, strlen(str));
 
 		/* Free the allocated memory*/
 		free(str);
@@ -93,5 +80,5 @@ int print_int(va_list args)
 		return (chars_written);
 	}
 
-	return -1;
+	return (-1);
 }
