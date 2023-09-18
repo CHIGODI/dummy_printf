@@ -8,34 +8,38 @@
 
 int _printf(const char *format, ...)
 {
+	int i = 0, printed_chars = 0;
+	int (*printer)(va_list);
+	int precision;
 	va_list args;
-	int i = 0;
-	int printed_chars = 0;
+
+	if (format == NULL)
+		return (-1);
 
 	va_start(args, format);
 
-	while (format[i] != '\0')
+	for (i = 0; format[i] != '\0'; i++)
 	{
-		if (format[i] == '%' && format[i + 1] != '\0')
+		if (format[i] == '%')
 		{
-			i++;
-			int (*printer)(va_list) = format_handler(format, &i);
+			precision = get_precision(format, &i, list);
+			printer = format_handler(format, &i);
+
 			if (printer)
 			{
 				printed_chars += printer(args);
 			}
 			else
 			{
-				printed_chars += write(1, "ERROR", 5);
+				return (-1);
 			}
 		}
 		else
 		{
 			printed_chars += write(1, &format[i], 1);
 		}
-		i++;
 	}
 
 	va_end(args);
-	return printed_chars;
+	return (printed_chars);
 }

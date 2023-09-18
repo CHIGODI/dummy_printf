@@ -1,7 +1,7 @@
 #include "main.h"
 /**
  * print_char - handles character
- * @va_list: arguments
+ * @args: arguments
  *
  * Return: nuber of characters
  */
