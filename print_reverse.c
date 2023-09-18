@@ -3,15 +3,28 @@
  * print_reverse - handle printing string in reverse
  * @args: argument list
  *
- * Return: reversed string
+ * Return: reversed number of characters printed
  */
-char print_reverse(va_list args)
+int print_reverse(va_list args)
 {
-	char *str = va_arg(args, char *);
+	char *str, rstr;
+	int i, count = 0;
 
-	int len = strlen(str);
+	str = va_arg(args, char *);
 
-	reverse(str);
+	if (str == NULL)
+	{
+		return (-1);
+	}
+	for (i = 0; str[i]; i++)
+		;
 
-	return (write(1, str, len));
+	for (i = i - 1; i >= 0; i--)
+	{
+		rstr = str[i];
+
+		write(1, &rstr, 1);
+		count++;
+	}
+	return (count);
 }
