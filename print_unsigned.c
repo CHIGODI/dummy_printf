@@ -1,88 +1,98 @@
 #include "main.h"
+/**
+ * reverse - Reverses a string
+ * @str: The string to be reversed
+ * @length: The length of the string
+ *
+ * Description: This function reverses the characters in the given string.
+ */
 static void reverse(char *str, int length)
 {
-        int start = 0;
-        int end = length - 1;
-        while (start < end)
-        {
-            char temp = str[start];
-            str[start] = str[end];
-            str[end] = temp;
-            start++;
-            end--;
-        }
-}
+	int start = 0;
+	int end = length - 1;
 
+	while (start < end)
+	{
+		char temp = str[start];
+
+		str[start] = str[end];
+		str[end] = temp;
+		start++;
+		end--;
+	}
+}
 /**
- * itoa - Converts an integer to a string representation with the specified base
- * @num: The integer to be converted.
+ * itoa_unsigned - Converts an unsigned integer to a
+ * string representation with the specified base
+ * @num: The unsigned integer to be converted.
  * @str: A buffer to store the resulting string.
  * @base: The numeric base for the conversion
  *
  * Return: Void
  */
-void itoa(int num, char *str, int base)
+void itoa_unsigned(unsigned int num, char *str, int base)
 {
-        int i = 0, rem;
-        bool isNegative = false;
+	int i = 0;
 
-        if (num == 0)
-        {
-                str[i++] = '0';
-                str[i] = '\0';
-                return;
-        }
+	if (num == 0)
+	{
+		str[i++] = '0';
+		str[i] = '\0';
+		return;
+	}
 
-        if (num < 0 && base == 10)
-        {
-                isNegative = true;
-                num = -num;
-        }
+	while (num != 0)
+	{
+		int rem = num % base;
 
-        while (num != 0)
-        {
-                rem = num % base;
-                str[i++] = (rem > 9) ? (rem - 10) + 'a' : rem + '0';
-                num /= base;
-        }
-
-        if (isNegative)
-        {
-                str[i++] = '-';
-        }
-        str[i] = '\0';
-
-        reverse(str, i);
+		str[i++] = rem + '0';
+		num /= base;
+	}
+	str[i] = '\0';
+	reverse(str, i);
 }
 
 /**
- * print_unsigned - handle %u
- * @args: argument passed
+ * print_unsigned - Handle %u
+ * @args: Argument passed
  *
  * Return: Number of characters printed or -1 on failure
  */
 int print_unsigned(va_list args)
 {
 	unsigned int num = va_arg(args, unsigned int);
-	unsigned int temp = num;
-	char *str;
-	int count = 0;
 	int char_count = 0;
 
-	while (temp != 0)
+	if (num == 0)
 	{
-		temp /= 10;
-		count++;
+		char_count += write(1, "0", 1);
 	}
-
-        str = malloc((sizeof(char) * count) + 1);
-	if (str == NULL)
+	else
 	{
-		return (-1);
-	}
-        itoa(num, str, 10);
-        char_count = write(1, str, strlen(str));
+		int digit_count = 0;
+		unsigned int temp = num;
 
-	free(str);
-	return char_count;
+		while (temp != 0)
+		{
+			temp /= 10;
+			digit_count++;
+		}
+		while (digit_count > 0)
+		{
+			unsigned int divisor = 1;
+			int i;
+
+			for (i = 1; i < digit_count; i++)
+			{
+				divisor *= 10;
+			}
+
+			char digit = '0' + (num / divisor);
+
+			char_count += write(1, &digit, 1);
+			num %= divisor;
+			digit_count--;
+		}
+	}
+	return (char_count);
 }
